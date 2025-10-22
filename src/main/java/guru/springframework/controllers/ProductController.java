@@ -4,6 +4,7 @@ import guru.springframework.commands.ProductForm;
 import guru.springframework.converters.ProductToProductForm;
 import guru.springframework.domain.Product;
 import guru.springframework.services.ProductService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import jakarta.validation.Valid;
  * Created by jt on 1/10/17.
  */
 @Controller
+@Slf4j
 public class ProductController {
 
 
@@ -65,16 +67,19 @@ public class ProductController {
     public String saveOrUpdateProduct(@Valid ProductForm productForm, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
+            log.warn("Validation errors while submitting product form: {}", bindingResult.getAllErrors());
             return "product/productform";
         }
 
         Product savedProduct = productService.saveOrUpdateProductForm(productForm);
+        log.info("Saved product with id: {}", savedProduct.getId());
 
         return "redirect:/product/show/" + savedProduct.getId();
     }
 
     @PostMapping("/product/delete/{id}")
     public String delete(@PathVariable String id){
+        log.info("Deleting product with id: {}", id);
         productService.delete(id);
         return "redirect:/product/list";
     }
