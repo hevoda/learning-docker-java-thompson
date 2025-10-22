@@ -7,16 +7,17 @@ import java.math.BigDecimal;
  * Created by jt on 1/10/17.
  */
 public class ProductForm {
-    private String id;
+
+    private Long id;
     private String description;
     private BigDecimal price;
     private String imageUrl;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

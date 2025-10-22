@@ -1,7 +1,7 @@
 package guru.springframework.converters;
 
 import guru.springframework.commands.ProductForm;
-import guru.springframework.domain.Product;
+import guru.springframework.domain.ProductJPA;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
  * Created by jt on 1/10/17.
  */
 @Component
-public class ProductToProductForm implements Converter<Product, ProductForm> {
+public class ProductToProductForm implements Converter<ProductJPA, ProductForm> {
     @Override
-    public ProductForm convert(Product product) {
+    public ProductForm convert(ProductJPA productJPA) {
         ProductForm productForm = new ProductForm();
-        productForm.setId(product.getId().toHexString());
-        productForm.setDescription(product.getDescription());
-        productForm.setPrice(product.getPrice());
-        productForm.setImageUrl(product.getImageUrl());
+        productForm.setId(productForm.getId());
+        productForm.setDescription(productJPA.getDescription());
+        productForm.setPrice(productJPA.getPrice());
+        productForm.setImageUrl(productJPA.getImageUrl());
         return productForm;
     }
 }

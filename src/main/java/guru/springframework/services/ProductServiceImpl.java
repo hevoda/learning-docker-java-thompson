@@ -2,7 +2,7 @@ package guru.springframework.services;
 
 import guru.springframework.commands.ProductForm;
 import guru.springframework.converters.ProductFormToProduct;
-import guru.springframework.domain.Product;
+import guru.springframework.domain.ProductJPA;
 import guru.springframework.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,21 +27,21 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<Product> listAll() {
-        List<Product> products = new ArrayList<>();
-        productRepository.findAll().forEach(products::add); //fun with Java 8
-        return products;
+    public List<ProductJPA> listAll() {
+        List<ProductJPA> productJPAS = new ArrayList<>();
+        productRepository.findAll().forEach(productJPAS::add); //fun with Java 8
+        return productJPAS;
     }
 
     @Override
-    public Product getById(String id) {
+    public ProductJPA getById(String id) {
         return productRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Product saveOrUpdate(Product product) {
-        productRepository.save(product);
-        return product;
+    public ProductJPA saveOrUpdate(ProductJPA productJPA) {
+        productRepository.save(productJPA);
+        return productJPA;
     }
 
     @Override
@@ -50,10 +50,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product saveOrUpdateProductForm(ProductForm productForm) {
-        Product savedProduct = saveOrUpdate(productFormToProduct.convert(productForm));
+    public ProductJPA saveOrUpdateProductForm(ProductForm productForm) {
+        ProductJPA savedProductJPA = saveOrUpdate(productFormToProduct.convert(productForm));
 
-        System.out.println("Saved Product Id: " + savedProduct.getId());
-        return savedProduct;
+        System.out.println("Saved ProductJPA Id: " + savedProductJPA.getId());
+        return savedProductJPA;
     }
 }

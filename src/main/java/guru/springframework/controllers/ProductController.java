@@ -2,7 +2,7 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.ProductForm;
 import guru.springframework.converters.ProductToProductForm;
-import guru.springframework.domain.Product;
+import guru.springframework.domain.ProductJPA;
 import guru.springframework.services.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,10 @@ public class ProductController {
         this.productService = productService;
         this.productToProductForm = productToProductForm;
     }
+    @GetMapping(value = "/login")
+    public String login(){
+        return "login";
+    }
 
     @GetMapping("/")
     public String redirToList(){
@@ -50,11 +54,11 @@ public class ProductController {
 
     @GetMapping ("/product/edit/{id}")
     public String edit(@PathVariable String id, Model model){
-        Product product = productService.getById(id);
-        ProductForm productForm = productToProductForm.convert(product);
+        ProductJPA productJPA = productService.getById(id);
+        ProductForm productForm = productToProductForm.convert(productJPA);
 
         model.addAttribute("productForm", productForm);
-        return "product/productform";
+        return "productJPA/productform";
     }
 
     @GetMapping("/product/new")
@@ -71,10 +75,10 @@ public class ProductController {
             return "product/productform";
         }
 
-        Product savedProduct = productService.saveOrUpdateProductForm(productForm);
-        log.info("Saved product with id: {}", savedProduct.getId());
+        ProductJPA savedProductJPA = productService.saveOrUpdateProductForm(productForm);
+        log.info("Saved product with id: {}", savedProductJPA.getId());
 
-        return "redirect:/product/show/" + savedProduct.getId();
+        return "redirect:/product/show/" + savedProductJPA.getId();
     }
 
     @PostMapping("/product/delete/{id}")

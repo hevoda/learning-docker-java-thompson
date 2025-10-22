@@ -1,7 +1,7 @@
 package guru.springframework.services;
 
 import guru.springframework.commands.ProductForm;
-import guru.springframework.domain.Product;
+import guru.springframework.domain.ProductJPA;
 
 import java.util.List;
 
@@ -10,13 +10,13 @@ import java.util.List;
  */
 public interface ProductService {
 
-    List<Product> listAll();
+    List<ProductJPA> listAll();
 
-    Product getById(String id);
+    ProductJPA getById(String id);
 
-    Product saveOrUpdate(Product product);
+    ProductJPA saveOrUpdate(ProductJPA productJPA);
 
     void delete(String id);
 
-    Product saveOrUpdateProductForm(ProductForm productForm);
+    ProductJPA saveOrUpdateProductForm(ProductForm productForm);
 }

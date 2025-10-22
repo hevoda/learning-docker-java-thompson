@@ -16,7 +16,7 @@
 </head>
 <body>
 <div class="container">
-    <div th:if="${not #lists.isEmpty(products)}">
+    <div th:if="${not #lists.isEmpty(productJPAS)}">
         <h2>Product List</h2>
         <table class="table table-striped">
             <tr>
@@ -28,20 +28,20 @@
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
-            <tr th:each="product : ${products}">
-                <td th:text="${product.id.toHexString()}"></td>
-                <td th:text="${product.description}"></td>
-                <td th:text="${product.price}"></td>
-                <td th:text="${product.imageUrl}"></td>
-                <td><a th:href="${'/product/show/' + product.id.toHexString()}">View</a> </td>
-                <td><a th:href="${'/product/edit/' + product.id.toHexString()}">Edit</a> </td>
-                <td><a th:href="${'/product/delete/' + product.id.toHexString()}">Delete</a> </td>
+            <tr th:each="productJPA : ${productJPAS}">
+                <td th:text="${productJPA.id.toHexString()}"></td>
+                <td th:text="${productJPA.description}"></td>
+                <td th:text="${productJPA.price}"></td>
+                <td th:text="${productJPA.imageUrl}"></td>
+                <td><a th:href="${'/productJPA/show/' + productJPA.id.toHexString()}">View</a> </td>
+                <td><a th:href="${'/productJPA/edit/' + productJPA.id.toHexString()}">Edit</a> </td>
+                <td><a th:href="${'/productJPA/delete/' + productJPA.id.toHexString()}">Delete</a> </td>
             </tr>
         </table>
     </div>
     <div class="row">
         <div class="col-sm-3">
-            <a href="/product/new">New Product</a>
+            <a href="/productJPA/new">New Product</a>
         </div>
     </div>
 </div>
