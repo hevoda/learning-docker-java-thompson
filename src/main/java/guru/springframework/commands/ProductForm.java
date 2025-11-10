@@ -1,11 +1,14 @@
 package guru.springframework.commands;
 
 
+import org.springframework.context.annotation.Profile;
+
 import java.math.BigDecimal;
 
 /**
  * Created by jt on 1/10/17.
  */
+@Profile({"h2", "dev"})
 public class ProductForm {
 
     private Long id;

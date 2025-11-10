@@ -1,0 +1,11 @@
+# application.yml - configurazione generale
+spring:
+  profiles:
+    active: h2 # Questo è il profilo attivo (può essere sovrascritto con -Dspring.profiles.active=dev/mongo/h2)
+
+logging:
+  level:
+    org.springframework: INFO
+    org.springframework.security: DEBUG
+
+

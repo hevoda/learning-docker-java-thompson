@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Core Online Tutorial - Product Form</title>
+    <title>Spring Core Online Tutorial - ProductEntity Form</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
@@ -17,9 +17,9 @@
 <body>
 <div class="container">
 
-    <h2>Product Details</h2>
+    <h2>ProductEntity Details</h2>
     <div>
-        <form class="form-horizontal" th:object="${productForm}" th:action="@{/productJPA}" method="post">
+        <form class="form-horizontal" th:object="${productForm}" th:action="@{/ProductEntity}" method="post">
 
             <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
                 <p th:text="#{form.hasErrors}">Error Message</p>

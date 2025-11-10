@@ -2,6 +2,7 @@ package guru.springframework.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +16,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@Profile({"h2", "dev", "mongo"})
 public class SecurityConfiguration {
 
     //Configurazione degli utenti in memoria
@@ -22,12 +24,12 @@ public class SecurityConfiguration {
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         return new InMemoryUserDetailsManager(
                 User.builder()
-                        .username("admin")
+                        .username("herve")
                         .password(passwordEncoder.encode("admin"))
                         .roles("ADMIN")
                         .build(),
                 User.builder()
-                        .username("user")
+                        .username("kokou")
                         .password(passwordEncoder.encode("user"))
                         .roles("USER")
                         .build()
@@ -52,6 +54,8 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/", "/console/**").permitAll()
+                        .requestMatchers("/api/products/**").hasRole("ADMIN")
+                        .requestMatchers("/products/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
