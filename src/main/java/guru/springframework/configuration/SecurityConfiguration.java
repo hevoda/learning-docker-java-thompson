@@ -53,7 +53,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/console/**").permitAll()
+                        .requestMatchers("/", "/login", "/console/**").permitAll()
                         .requestMatchers("/api/products/**").hasRole("ADMIN")
                         .requestMatchers("/products/**").hasRole("USER")
                         .anyRequest().authenticated()
