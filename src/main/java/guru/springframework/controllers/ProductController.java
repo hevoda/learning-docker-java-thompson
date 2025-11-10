@@ -47,7 +47,7 @@ public class ProductController {
         return "product/list";
     }
 
-    // ------------------- Show/Edit/Create -------------------
+
 
     @GetMapping("/product/show/{id}")
     public String showProduct(@PathVariable String id, Model model, RedirectAttributes redirectAttributes) {
@@ -59,9 +59,9 @@ public class ProductController {
 
     @GetMapping("/product/edit/{id}")
     public String editProduct(@PathVariable String id, Model model, RedirectAttributes redirectAttributes) {
-        ProductEntity productEntity = getProductOrRedirect(id, redirectAttributes);
-        if (productEntity == null) return "redirect:/product/list";
-        model.addAttribute("productForm", productToProductForm.convert(productEntity));
+        ProductEntity product = getProductOrRedirect(id, redirectAttributes);
+        if (product == null) return "redirect:/product/list";
+        model.addAttribute("productDetails", productToProductForm.convert(product));
         return "product/productform";
     }
 

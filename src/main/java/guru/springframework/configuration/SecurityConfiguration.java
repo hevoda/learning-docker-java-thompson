@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Profile({"h2", "dev", "mongo"})
 public class SecurityConfiguration {
 
-    //Configurazione degli utenti in memoria
+    // Configurazione degli utenti in memoria
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         return new InMemoryUserDetailsManager(
@@ -36,30 +35,37 @@ public class SecurityConfiguration {
         );
     }
 
-    //Password encoder (BCrypt)
+    // Password encoder (BCrypt)
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    //AuthenticationManager, sostituisce il vecchio configureGlobal
+    // AuthenticationManager, sostituisce il vecchio configureGlobal
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
-    //Configurazione HTTP security
+    // Configurazione HTTP security
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/login", "/console/**").permitAll()
+                        .requestMatchers("/", "/login", "/console/**").permitAll()  // Permetti l'accesso a login e root
                         .requestMatchers("/api/products/**").hasRole("ADMIN")
                         .requestMatchers("/products/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
-                .csrf(AbstractHttpConfigurer::disable)
-                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)); // ✅ Modo corretto con Spring 6.1+
+                .formLogin(form -> form
+                        .loginPage("/login")  // Personalizza il percorso di login
+                        .permitAll()
+                )
+                .csrf(AbstractHttpConfigurer::disable)  // Disabilita CSRF
+                .headers(headers -> headers
+                        // Imposta manualmente l'intestazione 'X-Frame-Options' (se necessario)
+                        .frameOptions().sameOrigin() // Permette l'inclusione dei frame solo dallo stesso dominio
+                );
 
         return http.build();
     }
