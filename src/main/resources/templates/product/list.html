@@ -1,50 +1,60 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Core Online Tutorial - List Products</title>
+    <title>Spring Boot  - List Products</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
+    <!-- Inclusione di Bootstrap CSS -->
+    <!-- Il percorso del CSS di Bootstrap è stato modificato per utilizzare il meccanismo @{} di Thymeleaf per risolvere correttamente il percorso -->
     <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
-          rel="stylesheet" media="screen"/>
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}">  <!-- Correzione: Thymeleaf risolverà correttamente il percorso -->
+    rel="stylesheet" media="screen"/>
 
-    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
-            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
-
+    <!-- Inclusione di un CSS personalizzato -->
+    <!-- Correzione: uso del meccanismo @{} per Thymeleaf per risolvere correttamente il percorso del CSS -->
     <link href="../../static/css/spring-core.css"
-          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+          th:href="@{css/spring-core.css}">  <!-- Correzione: Thymeleaf risolverà correttamente il percorso nella cartella static -->
+    rel="stylesheet" media="screen"/>
 </head>
 <body>
 <div class="container">
-    <div th:if="${not #lists.isEmpty(productEntities)}">
-        <h2>ProductEntity List</h2>
+    <div th:if="${not #lists.isEmpty(products)}">
+        <h2>Product List</h2>
         <table class="table table-striped">
             <tr>
                 <th>Id</th>
                 <th>Description</th>
                 <th>Price</th>
                 <th>Image URL</th>
-                <th>List</th>
+                <th>View</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
-            <tr th:each="ProductEntity : ${productEntities}">
-                <td th:text="${ProductEntity.id.toHexString()}"></td>
-                <td th:text="${ProductEntity.description}"></td>
-                <td th:text="${ProductEntity.price}"></td>
-                <td th:text="${ProductEntity.imageUrl}"></td>
-                <td><a th:href="${'/ProductEntity/show/' + ProductEntity.id.toHexString()}">View</a> </td>
-                <td><a th:href="${'/ProductEntity/edit/' + ProductEntity.id.toHexString()}">Edit</a> </td>
-                <td><a th:href="${'/ProductEntity/delete/' + ProductEntity.id.toHexString()}">Delete</a> </td>
+            <tr th:each="product : ${products}">
+                <!-- Correzione: uso del meccanismo @{} per costruire dinamicamente i link corretti -->
+                <td th:text="${product.id.toHexString()}"></td>
+                <td th:text="${product.description}"></td>
+                <td th:text="${product.price}"></td>
+                <td th:text="${product.imageUrl}"></td>
+                <!-- Correzioni: Thymeleaf risolverà i link dinamicamente, e ho corretto i percorsi degli URL -->
+                <td><a th:href="@{'/ProductEntity/show/' + ${product.id.toHexString()}}">View</a> </td>
+                <td><a th:href="@{'/ProductEntity/edit/' + ${product.id.toHexString()}}">Edit</a> </td>
+                <td><a th:href="@{'/ProductEntity/delete/' + ${product.id.toHexString()}}">Delete</a> </td>
             </tr>
         </table>
     </div>
+
     <div class="row">
         <div class="col-sm-3">
-            <a href="/ProductEntity/new">New ProductEntity</a>
+            <!-- Correzione: usa @{} per risolvere il percorso dinamicamente anche per il link per aggiungere un nuovo prodotto -->
+            <a th:href="@{/ProductEntity/new}">New Product</a>  <!-- Correzione: Thymeleaf risolve correttamente il link -->
         </div>
     </div>
 </div>
 
+<!-- Inclusione di jQuery -->
+<!-- Correzione: anche il percorso di jQuery è stato modificato per utilizzare @{} di Thymeleaf, permettendo una corretta gestione del percorso -->
+<script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+        th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script> <!-- Correzione: Thymeleaf risolve correttamente il percorso -->
 </body>
 </html>

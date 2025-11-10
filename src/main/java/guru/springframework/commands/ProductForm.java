@@ -2,6 +2,7 @@ package guru.springframework.commands;
 
 
 import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
  * Created by jt on 1/10/17.
  */
 @Profile({"h2", "dev"})
+@Component
 public class ProductForm {
 
     private Long id;
