@@ -2,84 +2,155 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.ProductForm;
 import guru.springframework.converters.ProductToProductForm;
-import guru.springframework.domain.Product;
+import guru.springframework.domain.ProductEntity;
 import guru.springframework.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.validation.Valid;
+import java.util.function.Function;
 
-/**
- * Created by jt on 1/10/17.
- */
 @Controller
+@Slf4j
+@Profile("h2")
+@RequestMapping("/products") // PREFISSO AGGIORNATO
 public class ProductController {
-    private ProductService productService;
 
-    private ProductToProductForm productToProductForm;
+    private static final String FORM_VIEW = "product/productform";
+    private static final String LIST_VIEW = "product/list";
+    private static final String SHOW_VIEW = "product/show";
+    private static final String REDIRECT_LIST = "redirect:/products/list"; // aggiornato
 
-    @Autowired
-    public void setProductToProductForm(ProductToProductForm productToProductForm) {
-        this.productToProductForm = productToProductForm;
-    }
+    private final ProductService productService;
+    private final ProductToProductForm converter;
 
-    @Autowired
-    public void setProductService(ProductService productService) {
+    public ProductController(ProductService productService, ProductToProductForm converter) {
         this.productService = productService;
+        this.converter = converter;
     }
 
-    @RequestMapping("/")
-    public String redirToList(){
-        return "redirect:/product/list";
+    // ================================
+    // LOGIN
+    // ================================
+    @GetMapping("/login")
+    public String login() {
+        log.debug("Accessing login page");
+        return "product/login";
     }
 
-    @RequestMapping({"/product/list", "/product"})
-    public String listProducts(Model model){
+    // ================================
+    // REDIRECT ROOT
+    // ================================
+    @GetMapping("/")
+    public String redirectToList() {
+        log.debug("Redirecting to product list");
+        return REDIRECT_LIST;
+    }
+
+    // ================================
+    // LIST
+    // ================================
+    @GetMapping("/list")
+    public String list(Model model) {
+        log.debug("Listing all products");
         model.addAttribute("products", productService.listAll());
-        return "product/list";
+        return LIST_VIEW;
     }
 
-    @RequestMapping("/product/show/{id}")
-    public String getProduct(@PathVariable String id, Model model){
-        model.addAttribute("product", productService.getById(id));
-        return "product/show";
+    // ================================
+    // SHOW
+    // ================================
+    @GetMapping("/show/{id}")
+    public String show(@PathVariable Long id, Model model, RedirectAttributes ra) {
+        log.debug("Request to show product with ID: {}", id);
+        return handleProductOrRedirect(id, ra, product -> {
+            model.addAttribute("product", product);
+            log.info("Displaying product: {}", product.getDescription());
+            return SHOW_VIEW;
+        });
     }
 
-    @RequestMapping("product/edit/{id}")
-    public String edit(@PathVariable String id, Model model){
-        Product product = productService.getById(id);
-        ProductForm productForm = productToProductForm.convert(product);
-
-        model.addAttribute("productForm", productForm);
-        return "product/productform";
-    }
-
-    @RequestMapping("/product/new")
-    public String newProduct(Model model){
+    // ================================
+    // NEW
+    // ================================
+    @GetMapping("/new")
+    public String newProduct(Model model) {
+        log.debug("Creating new product form");
         model.addAttribute("productForm", new ProductForm());
-        return "product/productform";
+        return FORM_VIEW;
     }
 
-    @RequestMapping(value = "/product", method = RequestMethod.POST)
-    public String saveOrUpdateProduct(@Valid ProductForm productForm, BindingResult bindingResult){
+    // ================================
+    // EDIT
+    // ================================
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Long id, Model model, RedirectAttributes ra) {
+        log.debug("Request to edit product with ID: {}", id);
+        return handleProductOrRedirect(id, ra, product -> {
+            model.addAttribute("productForm", converter.convert(product));
+            log.info("Editing product: {}", product.getDescription());
+            return FORM_VIEW;
+        });
+    }
 
-        if(bindingResult.hasErrors()){
-            return "product/productform";
+    // ================================
+    // SAVE/UPDATE
+    // ================================
+    @PostMapping
+    public String saveOrUpdate(
+            @Valid @ModelAttribute("productForm") ProductForm form,
+            BindingResult result,
+            RedirectAttributes ra,
+            Model model) {
+
+        if (result.hasErrors()) {
+            log.warn("Validation errors: {}", result.getAllErrors());
+            model.addAttribute("productForm", form);
+            return FORM_VIEW;
         }
 
-        Product savedProduct = productService.saveOrUpdateProductForm(productForm);
+        ProductEntity saved = productService.saveOrUpdateProductForm(form);
+        log.info("Saved product with ID: {}", saved.getId());
+        ra.addFlashAttribute("successMessage", "Prodotto salvato con successo!");
 
-        return "redirect:/product/show/" + savedProduct.getId();
+        return "redirect:/products/show/" + saved.getId(); // aggiornato
     }
 
-    @RequestMapping("/product/delete/{id}")
-    public String delete(@PathVariable String id){
-        productService.delete(id);
-        return "redirect:/product/list";
+    // ================================
+    // DELETE
+    // ================================
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, RedirectAttributes ra) {
+        log.debug("Request to delete product with ID: {}", id);
+        return handleProductOrRedirect(id, ra, product -> {
+            productService.delete(id);
+            ra.addFlashAttribute("successMessage", "Prodotto eliminato con successo!");
+            log.info("Deleted product with ID: {}", id);
+            return REDIRECT_LIST;
+        });
+    }
+
+    // ================================
+    // HELPER
+    // ================================
+    private String handleProductOrRedirect(
+            Long id,
+            RedirectAttributes ra,
+            Function<ProductEntity, String> onSuccess) {
+
+        ProductEntity product = productService.getById(id);
+
+        if (product == null) {
+            log.warn("Product with ID {} not found", id);
+            ra.addFlashAttribute("errorMessage", "Prodotto non trovato");
+            return REDIRECT_LIST;
+        }
+
+        return onSuccess.apply(product);
     }
 }

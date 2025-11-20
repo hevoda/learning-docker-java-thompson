@@ -1,27 +1,31 @@
 package guru.springframework.converters;
 
 import guru.springframework.commands.ProductForm;
-import guru.springframework.domain.Product;
-import org.bson.types.ObjectId;
+import guru.springframework.domain.ProductEntity;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
-/**
- * Created by jt on 1/10/17.
- */
 @Component
-public class ProductFormToProduct implements Converter<ProductForm, Product> {
+public class ProductFormToProduct implements Converter<ProductForm, ProductEntity> {
 
     @Override
-    public Product convert(ProductForm productForm) {
-        Product product = new Product();
-        if (productForm.getId() != null  && !StringUtils.isEmpty(productForm.getId())) {
-            product.setId(new ObjectId(productForm.getId()));
-        }
-        product.setDescription(productForm.getDescription());
-        product.setPrice(productForm.getPrice());
-        product.setImageUrl(productForm.getImageUrl());
-        return product;
+    public ProductEntity convert(ProductForm form) {
+        if (form == null) return null;
+
+        ProductEntity entity = new ProductEntity();
+
+        // Aggiorna ID se presente → update, altrimenti nuovo prodotto
+        entity.setId(form.getId());
+
+        entity.setDescription(sanitize(form.getDescription()));
+        entity.setImageUrl(sanitize(form.getImageUrl()));
+        entity.setPrice(form.getPrice());
+
+        return entity;
+    }
+
+    private String sanitize(String value) {
+        return value == null ? null : StringEscapeUtils.escapeHtml4(value.trim());
     }
 }

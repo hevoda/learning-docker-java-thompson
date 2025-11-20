@@ -4,55 +4,79 @@
     <title>Spring Core Online Tutorial - Show Product</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
+    <!-- Inclusione di Bootstrap CSS: utilizza Thymeleaf per risolvere correttamente i percorsi delle risorse -->
     <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
           th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
 
-    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
-            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
-
+    <!-- Inclusione di CSS personalizzato: Thymeleaf risolverà correttamente il percorso del file -->
     <link href="../../static/css/spring-core.css"
           th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
 <div class="container">
 
+    <!-- Titolo della pagina -->
     <div class="row">
         <div class="col-sm-6">
             <h2>Show Product</h2>
         </div>
     </div>
+
+    <!-- Form per visualizzare i dettagli del prodotto -->
     <div class="row">
         <div class="col-sm-8">
             <form class="form-horizontal">
+
+                <!-- Visualizzazione dell'ID del prodotto -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Product Id:</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static" th:text="${product.id}">Product Id</p>
+                        <p class="form-control-static"  th:text="${product.id}">Product Id</p> <!-- Correzione: uso del nome 'product' come definito nel controller -->
                     </div>
                 </div>
+
+                <!-- Visualizzazione della descrizione del prodotto -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Description:</label>
                     <div class="col-sm-10">
                         <p class="form-control-static" th:text="${product.description}">Description</p>
                     </div>
                 </div>
+
+                <!-- Visualizzazione del prezzo del prodotto -->
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Price:</label>
                     <div class="col-sm-10">
                         <p class="form-control-static" th:text="${product.price}">Price</p>
                     </div>
                 </div>
+
+                <!-- Visualizzazione dell'URL dell'immagine del prodotto -->
                 <div class="form-group">
-                    <label class="col-sm-2 sm-2 control-label">Image URL:</label>
+                    <label class="col-sm-2 control-label">Image URL:</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static" th:text="${product.imageUrl}">Image</p>
+                        <p class="form-control-static" th:text="${product.imageUrl}">Image URL</p>
                     </div>
                 </div>
+
             </form>
         </div>
     </div>
+
+    <!-- Link per tornare alla lista dei prodotti -->
+    <div class="row">
+        <div class="col-sm-3">
+            <!-- Aggiunta di un link per tornare alla lista dei prodotti -->
+            <a class="btn btn-primary" th:href="@{/product/list}">Back to Product List</a>
+        </div>
+    </div>
+
 </div>
+
+<!-- Inclusione di jQuery: Thymeleaf risolverà automaticamente il percorso -->
+<script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+        th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 
 </body>
 </html>
