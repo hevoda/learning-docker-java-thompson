@@ -4,58 +4,65 @@ import guru.springframework.commands.ProductForm;
 import guru.springframework.converters.ProductFormToProduct;
 import guru.springframework.domain.ProductEntity;
 import guru.springframework.repositories.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * Created by jt on 1/10/17.
- */
 @Service
-@Profile({"h2", "dev"})
+@Slf4j
+@Profile("h2")
 public class ProductServiceJpaImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductFormToProduct productFormToProduct;
+    private final ProductFormToProduct toProduct;
 
-    @Autowired
-    public ProductServiceJpaImpl(ProductRepository productRepository, ProductFormToProduct productFormToProduct) {
+    public ProductServiceJpaImpl(ProductRepository productRepository, ProductFormToProduct toProduct) {
         this.productRepository = productRepository;
-        this.productFormToProduct = productFormToProduct;
+        this.toProduct = toProduct;
     }
-
 
     @Override
     public List<ProductEntity> listAll() {
-        List<ProductEntity> productEntities = new ArrayList<>();
-        productRepository.findAll().forEach(productEntities::add); //fun with Java 8
-        return productEntities;
+        log.debug("Fetching all products from repository");
+        List<ProductEntity> products = productRepository.findAll();
+        log.info("Fetched {} products", products.size());
+        return products;
     }
 
     @Override
-    public ProductEntity getById(String id) {
-        return productRepository.findById(id).orElse(null);
+    public ProductEntity getById(Long id) {
+        log.debug("Fetching product by ID: {}", id);
+        return productRepository.findById(id)
+                .orElseGet(() -> {
+                    log.warn("Product with ID {} not found", id);
+                    return null;
+                });
     }
 
     @Override
-    public ProductEntity saveOrUpdate(ProductEntity ProductEntity) {
-        productRepository.save(ProductEntity);
-        return ProductEntity;
+    public ProductEntity saveOrUpdate(ProductEntity entity) {
+        log.debug("Saving/updating product: {}", entity.getDescription());
+        ProductEntity saved = productRepository.save(entity);
+        log.info("Saved product with ID: {}", saved.getId());
+        return saved;
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Long id) {
+        log.debug("Deleting product with ID: {}", id);
         productRepository.deleteById(id);
+        log.info("Deleted product with ID: {}", id);
     }
 
     @Override
-    public ProductEntity saveOrUpdateProductForm(ProductForm productForm) {
-        ProductEntity savedProductEntity = saveOrUpdate(productFormToProduct.convert(productForm));
-
-        System.out.println("Saved ProductEntity Id: " + savedProductEntity.getId());
-        return savedProductEntity;
+    public ProductEntity saveOrUpdateProductForm(ProductForm form) {
+        log.debug("Converting ProductForm to ProductEntity for saving: {}", form.getDescription());
+        ProductEntity entity = toProduct.convert(form);
+        ProductEntity saved = saveOrUpdate(Objects.requireNonNull(entity));
+        log.info("Saved ProductEntity from form with ID: {}", saved.getId());
+        return saved;
     }
 }

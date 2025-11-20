@@ -17,7 +17,7 @@
 <div class="container">
     <h2>Product Details</h2>
 
-    <form class="form-horizontal" th:object="${productDetails}" th:action="@{/product}" method="post">
+    <form class="form-horizontal" th:object="${productForm}" th:action="@{/product}" method="post">
 
         <!-- Errori generali -->
         <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">

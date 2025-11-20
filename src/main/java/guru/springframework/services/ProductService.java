@@ -14,11 +14,11 @@ public interface ProductService {
 
     List<ProductEntity> listAll();
 
-    ProductEntity getById(String id);
+    ProductEntity getById(Long id);
 
     ProductEntity saveOrUpdate(ProductEntity productEntity);
 
-    void delete(String id);
+    void delete(Long id);
 
     ProductEntity saveOrUpdateProductForm(ProductForm productForm);
 }

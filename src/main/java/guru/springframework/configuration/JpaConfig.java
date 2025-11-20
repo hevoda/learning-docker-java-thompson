@@ -1,0 +1,14 @@
+package guru.springframework.configuration;
+
+
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+@Configuration
+@EnableJpaRepositories(basePackages = "guru.springframework.repositories")
+@EntityScan(basePackages = "guru.springframework.domain")
+@Profile("h2")
+public class JpaConfig {
+}

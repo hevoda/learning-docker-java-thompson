@@ -1,35 +1,31 @@
 package guru.springframework.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Version;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.context.annotation.Profile;
 
 import java.math.BigDecimal;
 
-/**
- * Created by jt on 1/10/17.
- */
-@Setter
-@Getter
 @Entity
-@Profile({"h2", "dev"})
+@Getter
+@Setter
+@NoArgsConstructor
+@Table(name = "products")
 public class ProductEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Version
     private Integer version;
 
-    private String productId;
+    @Column(nullable = false)
     private String description;
-    private BigDecimal price;
-    private String imageUrl;
 
+    @Column(nullable = false)
+    private BigDecimal price;
+
+    private String imageUrl;
 }

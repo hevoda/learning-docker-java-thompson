@@ -4,118 +4,153 @@ import guru.springframework.commands.ProductForm;
 import guru.springframework.converters.ProductToProductForm;
 import guru.springframework.domain.ProductEntity;
 import guru.springframework.services.ProductService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.function.Function;
 
 @Controller
 @Slf4j
-@Profile({"h2", "dev"})
+@Profile("h2")
+@RequestMapping("/products") // PREFISSO AGGIORNATO
 public class ProductController {
 
-    private final ProductService productService;
-    private final ProductToProductForm productToProductForm;
+    private static final String FORM_VIEW = "product/productform";
+    private static final String LIST_VIEW = "product/list";
+    private static final String SHOW_VIEW = "product/show";
+    private static final String REDIRECT_LIST = "redirect:/products/list"; // aggiornato
 
-    @Autowired
-    public ProductController(ProductService productService, ProductToProductForm productToProductForm) {
+    private final ProductService productService;
+    private final ProductToProductForm converter;
+
+    public ProductController(ProductService productService, ProductToProductForm converter) {
         this.productService = productService;
-        this.productToProductForm = productToProductForm;
+        this.converter = converter;
     }
 
-    // ------------------- Pages -------------------
-
+    // ================================
+    // LOGIN
+    // ================================
     @GetMapping("/login")
     public String login() {
-        return "login";
+        log.debug("Accessing login page");
+        return "product/login";
     }
 
+    // ================================
+    // REDIRECT ROOT
+    // ================================
     @GetMapping("/")
     public String redirectToList() {
-        return "redirect:/product/list";
+        log.debug("Redirecting to product list");
+        return REDIRECT_LIST;
     }
 
-    @GetMapping({"/product/list", "/products"})
-    public String listProducts(Model model) {
+    // ================================
+    // LIST
+    // ================================
+    @GetMapping("/list")
+    public String list(Model model) {
+        log.debug("Listing all products");
         model.addAttribute("products", productService.listAll());
-        return "product/list";
+        return LIST_VIEW;
     }
 
-
-
-    @GetMapping("/product/show/{id}")
-    public String showProduct(@PathVariable String id, Model model, RedirectAttributes redirectAttributes) {
-        ProductEntity product = getProductOrRedirect(id, redirectAttributes);
-        if (product == null) return "redirect:/product/list";
-        model.addAttribute("product", product);
-        return "product/show";
+    // ================================
+    // SHOW
+    // ================================
+    @GetMapping("/show/{id}")
+    public String show(@PathVariable Long id, Model model, RedirectAttributes ra) {
+        log.debug("Request to show product with ID: {}", id);
+        return handleProductOrRedirect(id, ra, product -> {
+            model.addAttribute("product", product);
+            log.info("Displaying product: {}", product.getDescription());
+            return SHOW_VIEW;
+        });
     }
 
-    @GetMapping("/product/edit/{id}")
-    public String editProduct(@PathVariable String id, Model model, RedirectAttributes redirectAttributes) {
-        ProductEntity product = getProductOrRedirect(id, redirectAttributes);
-        if (product == null) return "redirect:/product/list";
-        model.addAttribute("productDetails", productToProductForm.convert(product));
-        return "product/productform";
-    }
-
-    @GetMapping("/product/new")
+    // ================================
+    // NEW
+    // ================================
+    @GetMapping("/new")
     public String newProduct(Model model) {
+        log.debug("Creating new product form");
         model.addAttribute("productForm", new ProductForm());
-        return "product/productform";
+        return FORM_VIEW;
     }
 
-    // ------------------- Save/Update -------------------
+    // ================================
+    // EDIT
+    // ================================
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Long id, Model model, RedirectAttributes ra) {
+        log.debug("Request to edit product with ID: {}", id);
+        return handleProductOrRedirect(id, ra, product -> {
+            model.addAttribute("productForm", converter.convert(product));
+            log.info("Editing product: {}", product.getDescription());
+            return FORM_VIEW;
+        });
+    }
 
-    @PostMapping("/product")
-    public String saveOrUpdateProduct(
-            @Valid ProductForm productForm,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes,
+    // ================================
+    // SAVE/UPDATE
+    // ================================
+    @PostMapping
+    public String saveOrUpdate(
+            @Valid @ModelAttribute("productForm") ProductForm form,
+            BindingResult result,
+            RedirectAttributes ra,
             Model model) {
 
-        if (bindingResult.hasErrors()) {
-            log.warn("Validation errors while submitting product form: {}", bindingResult.getAllErrors());
-            model.addAttribute("productForm", productForm);
-            return "product/productform";
+        if (result.hasErrors()) {
+            log.warn("Validation errors: {}", result.getAllErrors());
+            model.addAttribute("productForm", form);
+            return FORM_VIEW;
         }
 
-        ProductEntity savedProduct = productService.saveOrUpdateProductForm(productForm);
-        log.info("Saved product with id: {}", savedProduct.getId());
-        redirectAttributes.addFlashAttribute("successMessage", "Product saved successfully!");
-        return "redirect:/product/show/" + savedProduct.getId();
+        ProductEntity saved = productService.saveOrUpdateProductForm(form);
+        log.info("Saved product with ID: {}", saved.getId());
+        ra.addFlashAttribute("successMessage", "Prodotto salvato con successo!");
+
+        return "redirect:/products/show/" + saved.getId(); // aggiornato
     }
 
-    // ------------------- Delete -------------------
-
-    @DeleteMapping("/product/delete/{id}")
-    public String deleteProduct(@PathVariable String id, RedirectAttributes redirectAttributes) {
-        ProductEntity product = getProductOrRedirect(id, redirectAttributes);
-        if (product == null) return "redirect:/product/list";
-
-        productService.delete(id);
-        log.info("Deleted product with id: {}", id);
-        redirectAttributes.addFlashAttribute("successMessage", "Product deleted successfully!");
-        return "redirect:/product/list";
+    // ================================
+    // DELETE
+    // ================================
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, RedirectAttributes ra) {
+        log.debug("Request to delete product with ID: {}", id);
+        return handleProductOrRedirect(id, ra, product -> {
+            productService.delete(id);
+            ra.addFlashAttribute("successMessage", "Prodotto eliminato con successo!");
+            log.info("Deleted product with ID: {}", id);
+            return REDIRECT_LIST;
+        });
     }
 
-    // ------------------- Helper Methods -------------------
+    // ================================
+    // HELPER
+    // ================================
+    private String handleProductOrRedirect(
+            Long id,
+            RedirectAttributes ra,
+            Function<ProductEntity, String> onSuccess) {
 
-    /**
-     * Helper to fetch product by ID or add an error message and return null if not found.
-     */
-    private ProductEntity getProductOrRedirect(String id, RedirectAttributes redirectAttributes) {
         ProductEntity product = productService.getById(id);
+
         if (product == null) {
-            log.warn("Product not found for id: {}", id);
-            redirectAttributes.addFlashAttribute("errorMessage", "Product not found");
+            log.warn("Product with ID {} not found", id);
+            ra.addFlashAttribute("errorMessage", "Prodotto non trovato");
+            return REDIRECT_LIST;
         }
-        return product;
+
+        return onSuccess.apply(product);
     }
 }

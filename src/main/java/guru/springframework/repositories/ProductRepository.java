@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 /**
  * Created by jt on 1/10/17.
  */
-@Profile({"h2", "dev"})
+@Profile("h2")
 @Repository
-public interface ProductRepository extends JpaRepository<ProductEntity, String> {
+public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 }

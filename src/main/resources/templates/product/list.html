@@ -1,60 +1,60 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Boot  - List Products</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Product List</title>
 
-    <!-- Inclusione di Bootstrap CSS -->
-    <!-- Il percorso del CSS di Bootstrap è stato modificato per utilizzare il meccanismo @{} di Thymeleaf per risolvere correttamente il percorso -->
     <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}">  <!-- Correzione: Thymeleaf risolverà correttamente il percorso -->
-    rel="stylesheet" media="screen"/>
-
-    <!-- Inclusione di un CSS personalizzato -->
-    <!-- Correzione: uso del meccanismo @{} per Thymeleaf per risolvere correttamente il percorso del CSS -->
-    <link href="../../static/css/spring-core.css"
-          th:href="@{css/spring-core.css}">  <!-- Correzione: Thymeleaf risolverà correttamente il percorso nella cartella static -->
-    rel="stylesheet" media="screen"/>
+          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
 </head>
 <body>
 <div class="container">
-    <div th:if="${not #lists.isEmpty(products)}">
-        <h2>Product List</h2>
-        <table class="table table-striped">
-            <tr>
-                <th>Id</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Image URL</th>
-                <th>View</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-            <tr th:each="product : ${products}">
-                <!-- Correzione: uso del meccanismo @{} per costruire dinamicamente i link corretti -->
-                <td th:text="${product.id.toHexString()}"></td>
-                <td th:text="${product.description}"></td>
-                <td th:text="${product.price}"></td>
-                <td th:text="${product.imageUrl}"></td>
-                <!-- Correzioni: Thymeleaf risolverà i link dinamicamente, e ho corretto i percorsi degli URL -->
-                <td><a th:href="@{'/ProductEntity/show/' + ${product.id.toHexString()}}">View</a> </td>
-                <td><a th:href="@{'/ProductEntity/edit/' + ${product.id.toHexString()}}">Edit</a> </td>
-                <td><a th:href="@{'/ProductEntity/delete/' + ${product.id.toHexString()}}">Delete</a> </td>
-            </tr>
-        </table>
-    </div>
 
     <div class="row">
-        <div class="col-sm-3">
-            <!-- Correzione: usa @{} per risolvere il percorso dinamicamente anche per il link per aggiungere un nuovo prodotto -->
-            <a th:href="@{/ProductEntity/new}">New Product</a>  <!-- Correzione: Thymeleaf risolve correttamente il link -->
+        <div class="col-sm-6">
+            <h2>Product List</h2>
+        </div>
+        <div class="col-sm-6 text-right">
+            <a class="btn btn-success" th:href="@{/product/new}">Add New Product</a>
         </div>
     </div>
-</div>
 
-<!-- Inclusione di jQuery -->
-<!-- Correzione: anche il percorso di jQuery è stato modificato per utilizzare @{} di Thymeleaf, permettendo una corretta gestione del percorso -->
-<script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
-        th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script> <!-- Correzione: Thymeleaf risolve correttamente il percorso -->
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Image URL</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}">ID</td>
+            <td th:text="${product.description}">Description</td>
+            <td th:text="${product.price}">Price</td>
+            <td th:text="${product.imageUrl}">Image URL</td>
+
+            <td>
+                <!-- ROTTA CORRETTE /product/... -->
+                <a class="btn btn-info btn-sm"
+                   th:href="@{'/product/show/' + ${product.id}}">View</a>
+
+                <a class="btn btn-warning btn-sm"
+                   th:href="@{'/product/edit/' + ${product.id}}">Edit</a>
+
+                <a class="btn btn-danger btn-sm"
+                   th:href="@{'/product/delete/' + ${product.id}}"
+                   onclick="return confirm('Are you sure you want to delete this product?');">
+                    Delete
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
 </body>
 </html>

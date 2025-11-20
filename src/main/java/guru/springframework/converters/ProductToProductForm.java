@@ -2,23 +2,33 @@ package guru.springframework.converters;
 
 import guru.springframework.commands.ProductForm;
 import guru.springframework.domain.ProductEntity;
-import org.springframework.context.annotation.Profile;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by jt on 1/10/17.
- */
 @Component
-@Profile({"h2", "dev"})
 public class ProductToProductForm implements Converter<ProductEntity, ProductForm> {
+
     @Override
-    public ProductForm convert(ProductEntity ProductEntity) {
-        ProductForm productForm = new ProductForm();
-        productForm.setId(productForm.getId());
-        productForm.setDescription(ProductEntity.getDescription());
-        productForm.setPrice(ProductEntity.getPrice());
-        productForm.setImageUrl(ProductEntity.getImageUrl());
-        return productForm;
+    public ProductForm convert(ProductEntity entity) {
+        if (entity == null) return null;
+
+        ProductForm form = new ProductForm();
+
+        form.setId(entity.getId());
+        form.setDescription(desanitize(entity.getDescription()));
+        form.setPrice(entity.getPrice());
+        form.setImageUrl(desanitize(entity.getImageUrl()));
+
+        return form;
+    }
+
+    /**
+     * Desanitizzazione per visualizzazione nei form HTML.
+     * Mantiene sicurezza XSS, ma rende il testo leggibile.
+     */
+    private String desanitize(String value) {
+        if (value == null) return null;
+        return StringEscapeUtils.unescapeHtml4(value.trim());
     }
 }
