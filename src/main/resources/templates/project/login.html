@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <title>Login Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Aggiunta della Favicon
+    <link rel="icon" href="favicon.ico" type="image/x-icon">-->
+
+    <style>
+        /* Definizione dei colori */
+        :root {
+            --verde-bosco: #1e4d3d;  /* Verde Bosca */
+            --cammello: #e2b97f;     /* Cammello */
+            --bianco: #ffffff;       /* Bianco */
+            --nome-azienda: #4b8a4d; /* Verde scuro per il nome dell'azienda */
+            --slogan-colore: #4e9a2e; /* Colore per lo slogan */
+        }
+
+        /* Background generale e testo */
+        body {
+            background-color: var(--bianco);
+            color: var(--verde-bosco);
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Container */
+        .container {
+            margin-top: 50px;
+            padding: 15px;
+            max-width: 400px;  /* Limita la larghezza del form */
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Titolo */
+        h2 {
+            color: var(--verde-bosco);
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Messaggi di errore/successo */
+        .alert {
+            margin-bottom: 20px;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
+
+        /* Campi di input */
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+        }
+
+        .form-control:focus {
+            border-color: var(--verde-bosco);
+            box-shadow: 0 0 0 0.2rem rgba(30, 77, 61, 0.25);
+        }
+
+        /* Pulsante */
+        .btn-primary {
+            background-color: var(--verde-bosco);
+            border-color: var(--verde-bosco);
+            color: var(--bianco);
+            padding: 10px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--cammello);
+            border-color: var(--cammello);
+        }
+
+        /* Media Query per dispositivi mobili */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                max-width: 90%;
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Login</h2>
+
+    <!-- Messaggio di errore se la login fallisce -->
+    <div th:if="${param.error}" class="alert alert-danger">
+        <strong>Error!</strong> Invalid username and/or password.
+    </div>
+
+    <!-- Messaggio se l'utente è stato disconnesso -->
+    <div th:if="${param.logout}" class="alert alert-info">
+        <strong>Success!</strong> You have been logged out.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <!-- Username -->
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" class="form-control" required="true" placeholder="Enter username"/>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="form-control" required="true" placeholder="Enter password"/>
+        </div>
+
+        <!-- Pulsante di invio -->
+        <button type="submit" class="btn btn-primary">Sign In</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS e dipendenze -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

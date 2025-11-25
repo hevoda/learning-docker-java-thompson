@@ -1,0 +1,59 @@
+:root {
+    --verde-bosco: #1e4d3d;
+    --cammello: #e2b97f;
+    --bianco: #ffffff;
+    --nome-azienda: #4b8a4d;
+    --slogan-colore: #4e9a2e;
+}
+
+body {
+    background-color: var(--bianco);
+    color: var(--verde-bosco);
+    font-family: 'Arial', sans-serif;
+}
+
+/* NAVBAR */
+.navbar-custom {
+    background-color: var(--verde-bosco) !important;
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+    color: var(--bianco) !important;
+}
+
+.navbar-custom .nav-link:hover {
+    color: var(--cammello) !important;
+}
+
+/* BUTTONS */
+.btn-primary {
+    background-color: var(--verde-bosco) !important;
+    border-color: var(--verde-bosco) !important;
+    color: var(--bianco) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--cammello) !important;
+    border-color: var(--cammello) !important;
+}
+
+/* TITOLI */
+.company-name {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: var(--nome-azienda);
+}
+
+.slogan {
+    font-size: 1.5em;
+    font-style: italic;
+    color: var(--slogan-colore);
+}
+
+.footer {
+    margin-top: 50px;
+    padding-top: 30px;
+    color: var(--verde-bosco);
+    text-align: center;
+}
