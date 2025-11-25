@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <title>Project List</title>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+</head>
+<body>
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Project List</h2>
+        </div>
+        <div class="col-sm-6 text-right">
+            <a class="btn btn-success" th:href="@{/project/new}">Add New Project</a>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Contractor</th>
+            <th>Client</th>
+            <th>Daily Rate</th>
+            <th>Technologies</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="project : ${projects}">
+            <td th:text="${project.id}">ID</td>
+            <td th:text="${project.name}">Name</td>
+            <td th:text="${project.status}">Status</td>
+            <td th:text="${project.startDate}">Start Date</td>
+            <td th:text="${project.endDate}">End Date</td>
+
+            <!-- Company and Client (ManyToOne) -->
+            <td th:text="${project.contractorCompany != null ? project.contractorCompany.name : '—'}">
+                Contractor
+            </td>
+
+            <td th:text="${project.client != null ? project.client.name : '—'}">
+                Client
+            </td>
+
+            <td th:text="${project.dailyRate}">Daily Rate</td>
+
+            <!-- Tecnologie associate -->
+            <td>
+                <ul>
+                    <li th:each="pt : ${project.technologies}">
+                        <span th:text="${pt.technology.name}">Tech</span>
+                        (<span th:text="${pt.technology.version}">vX.X</span>)
+                        - <span th:text="${pt.usage}">Usage</span>
+                    </li>
+                </ul>
+            </td>
+
+            <td>
+                <a class="btn btn-info btn-sm"
+                   th:href="@{'/project/show/' + ${project.id}}">View</a>
+
+                <a class="btn btn-warning btn-sm"
+                   th:href="@{'/project/edit/' + ${project.id}}">Edit</a>
+
+                <a class="btn btn-danger btn-sm"
+                   th:href="@{'/project/delete/' + ${project.id}}"
+                   onclick="return confirm('Are you sure you want to delete this project?');">
+                    Delete
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <title>Welcome Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Definizione dei colori */
+        :root {
+            --verde-bosco: #1e4d3d;  /* Verde Bosca */
+            --cammello: #e2b97f;     /* Cammello */
+            --bianco: #ffffff;       /* Bianco */
+            --nome-azienda: #4b8a4d; /* Verde scuro per il nome dell'azienda */
+            --slogan-colore: #4e9a2e; /* Colore per lo slogan */
+        }
+
+        /* Background generale e testo */
+        body {
+            background-color: var(--bianco);
+            color: var(--verde-bosco);
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Stile per il container */
+        .container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        /* Titolo */
+        h2 {
+            color: var(--verde-bosco);
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        /* Nome dell'azienda */
+        .company-name {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--nome-azienda);
+            margin-bottom: 10px;
+        }
+
+        /* Slogan */
+        .slogan {
+            font-size: 1.4em;
+            color: var(--slogan-colore);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        /* Testo introduttivo */
+        p {
+            font-size: 1.2em;
+            color: var(--cammello);
+        }
+
+        /* Pulsante */
+        .btn-primary {
+            background-color: var(--verde-bosco);
+            border-color: var(--verde-bosco);
+            color: var(--bianco);
+            padding: 10px 30px;
+            font-size: 1.2em;
+            border-radius: 5px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--cammello);
+            border-color: var(--cammello);
+        }
+
+        /* Footer con info aziendali */
+        .footer {
+            margin-top: 50px;
+            font-size: 1.1em;
+            color: var(--verde-bosco);
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .footer .logo {
+            width: 100px;
+            height: auto;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Nome Azienda -->
+    <div class="company-name" style="font-size: 2em; font-weight: bold; color: var(--nome-azienda);">HERVODA LABS</div>
+
+
+    <!-- Slogan -->
+    <div class="slogan">Soluzioni intelligenti, codice su misura</div>
+
+    <!-- Titolo -->
+    <h2>Welcome to Our Projects Application</h2>
+    <p>Please log in to access the projects we've worked on.</p>
+    <div>
+        <a href="/login" class="btn btn-primary">Go to Login</a>
+    </div>
+</div>
+
+<!-- Footer con info aziendali -->
+<div class="footer">
+    <p><strong>Contact Us:</strong></p>
+    <p>Phone: <a href="tel:+393273569171" style="color: var(--verde-bosco);">+39 327 356 9171</a></p>
+    <p>VAT Number: 12345678901</p>
+    <p><strong>Address:</strong> Via della Libertà 35, Cadidavid, 37135 Verona</p>
+
+    <!-- Logo "KH" -->
+    <div>
+        <img src="images/kh_logo.png" alt="KH Logo" class="logo">
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
