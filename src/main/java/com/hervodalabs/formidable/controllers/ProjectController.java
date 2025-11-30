@@ -29,7 +29,7 @@ public class ProjectController {
     private static final String FORM_VIEW = "project/projectform";
     private static final String LIST_VIEW = "project/list";
     private static final String SHOW_VIEW = "project/show";
-    private static final String REDIRECT_LIST = "redirect:/projects/list";
+    private static final String REDIRECT_LIST = "redirect:/project/list";
 
     private final ProjectService projectService;
     private final ProjectToProjectForm projectToForm;
