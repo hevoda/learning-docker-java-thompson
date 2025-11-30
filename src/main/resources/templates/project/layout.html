@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head th:replace="fragments/headerinc :: head"></head>
+<body>
+
+<!-- Navbar opzionale -->
+<div th:if="${showNavbar}" th:replace="fragments/header :: header"></div>
+
+<!-- Contenuto specifico -->
+<main class="container mt-4" th:fragment="content">
+    <div th:insert="${content}"></div>
+</main>
+
+<!-- Footer comune -->
+<div class="footer">
+    <p><strong>Contact Us:</strong></p>
+    <p>Phone: <a href="tel:+393273569171" style="color: var(--verde-bosco);">+39 327 356 9171</a></p>
+    <p>VAT Number: 12345678901</p>
+    <p><strong>Address:</strong> Via della Libertà 35, Cadidavid, 37135 Verona</p>
+</div>
+
+<div th:replace="fragments/scripts :: scripts"></div>
+</body>
+</html>

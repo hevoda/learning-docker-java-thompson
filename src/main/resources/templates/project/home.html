@@ -1,156 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="">
-<head>
-    <title>Welcome Page</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Favicon
-    <link rel="icon" href="path_to_favicon.ico" type="image/x-icon">-->
-
-    <style>
-        /* Definizione dei colori */
-        :root {
-            --verde-bosco: #1e4d3d;  /* Verde Bosca */
-            --cammello: #e2b97f;     /* Cammello */
-            --bianco: #ffffff;       /* Bianco */
-            --nome-azienda: #4b8a4d; /* Verde scuro per il nome dell'azienda */
-            --slogan-colore: #4e9a2e; /* Colore per lo slogan */
-        }
-
-        /* Background generale e testo */
-        body {
-            background-color: var(--bianco);
-            color: var(--verde-bosco);
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* Navbar */
-        nav {
-            background-color: var(--verde-bosco);
-        }
-
-        nav a {
-            color: var(--bianco);
-        }
-
-        nav a:hover {
-            color: var(--cammello);
-        }
-
-        /* Container */
-        .container {
-            margin-top: 50px;
-            text-align: center;
-            padding: 15px;
-        }
-
-        /* Titolo */
-        h2 {
-            color: var(--verde-bosco);
-            font-size: 2.5em;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        /* Nome dell'azienda */
-        .company-name {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: var(--nome-azienda);
-            margin-bottom: 15px;
-        }
-
-        /* Slogan */
-        .slogan {
-            font-size: 1.5em;
-            color: var(--slogan-colore);
-            font-style: italic;
-            margin-bottom: 25px;
-        }
-
-        /* Testo introduttivo */
-        p {
-            font-size: 1.2em;
-            color: var(--cammello);
-            margin-bottom: 30px;
-        }
-
-        /* Pulsante */
-        .btn-primary {
-            background-color: var(--verde-bosco);
-            border-color: var(--verde-bosco);
-            color: var(--bianco);
-            padding: 10px 30px;
-            font-size: 1.2em;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--cammello);
-            border-color: var(--cammello);
-        }
-
-        /* Footer con info aziendali */
-        .footer {
-            margin-top: 50px;
-            font-size: 1.1em;
-            color: var(--verde-bosco);
-            text-align: center;
-            padding-top: 30px;
-        }
-
-        .footer p {
-            margin: 5px 0;
-        }
-
-        .footer .logo {
-            width: 100px;
-            height: auto;
-            margin-top: 10px;
-        }
-
-        /* Media Query per dispositivi mobili */
-        @media (max-width: 768px) {
-            h2 {
-                font-size: 2em;
-            }
-
-            .company-name {
-                font-size: 2em;
-            }
-
-            .slogan {
-                font-size: 1.2em;
-            }
-
-            .btn-primary {
-                font-size: 1em;
-                padding: 8px 25px;
-            }
-        }
-    </style>
+<head th:replace="fragments/headerinc :: head">
+    <title th:text="'Welcome - Hervoda Labs'">Hervoda Labs</title>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light">
-    <a class="navbar-brand" href="/">HERVODA LABS</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/projects">Progetti</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/contact">Contatti</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<!-- Navbar tramite fragment -->
+<div th:replace="fragments/navbar :: header"></div>
 
-<div class="container">
+<!-- Contenuto principale -->
+<div class="container mt-5 text-center">
     <!-- Nome Azienda -->
     <div class="company-name">HERVODA LABS</div>
 
@@ -160,27 +19,16 @@
     <!-- Titolo -->
     <h2>Welcome to Our Projects Application</h2>
     <p>Please log in to access the projects we've worked on.</p>
-    <div>
-        <a href="/login" class="btn btn-primary">Go to Login</a>
-    </div>
+
+    <!-- Pulsante per login -->
+    <a th:href="@{/login}" class="btn btn-primary mt-3">Go to Login</a>
 </div>
 
-<!-- Footer con info aziendali -->
-<div class="footer">
-    <p><strong>Contact Us:</strong></p>
-    <p>Phone: <a href="tel:+393273569171" style="color: var(--verde-bosco);">+39 327 356 9171</a></p>
-    <p>VAT Number: 12345678901</p>
-    <p><strong>Address:</strong> Via della Libertà 35, Cadidavid, 37135 Verona</p>
+<!-- Footer tramite fragment -->
+<div th:replace="fragments/footer :: footer"></div>
 
-    <!-- Logo "KH"
-    <div>
-        <img src="images/kh_logo.png" alt="KH Logo" class="logo">
-    </div>-->
-</div>
+<!-- Script JS -->
+<div th:replace="fragments/scripts :: scripts"></div>
 
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
