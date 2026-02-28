@@ -4,23 +4,18 @@ import com.hervodalabs.formidable.commands.ProjectForm;
 import com.hervodalabs.formidable.converters.ProjectFormToProject;
 import com.hervodalabs.formidable.converters.ProjectToProjectForm;
 import com.hervodalabs.formidable.domain.Project;
-import com.hervodalabs.formidable.domain.ProjectStatus;
 import com.hervodalabs.formidable.services.ClientService;
 import com.hervodalabs.formidable.services.CompanyService;
 import com.hervodalabs.formidable.services.ProjectService;
 import com.hervodalabs.formidable.services.TechnologyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

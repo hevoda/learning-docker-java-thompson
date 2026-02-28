@@ -1,6 +1,6 @@
 package com.hervodalabs.formidable.commands;
 
-import com.hervodalabs.formidable.domain.ProjectStatus;
+import com.hervodalabs.formidable.enums.ProjectStatus;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

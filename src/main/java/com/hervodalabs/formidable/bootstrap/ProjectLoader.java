@@ -2,6 +2,7 @@ package com.hervodalabs.formidable.bootstrap;
 
 
 import com.hervodalabs.formidable.domain.*;
+import com.hervodalabs.formidable.enums.ProjectStatus;
 import com.hervodalabs.formidable.repositories.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

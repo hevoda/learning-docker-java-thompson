@@ -1,4 +1,4 @@
-package com.hervodalabs.formidable.domain;
+package com.hervodalabs.formidable.enums;
 
 
 public enum ProjectStatus {

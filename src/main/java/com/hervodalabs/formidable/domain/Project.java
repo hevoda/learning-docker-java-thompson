@@ -1,5 +1,6 @@
 package com.hervodalabs.formidable.domain;
 
+import com.hervodalabs.formidable.enums.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 

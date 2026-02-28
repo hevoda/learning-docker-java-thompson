@@ -4,7 +4,7 @@ import com.hervodalabs.formidable.commands.ProjectForm;
 import com.hervodalabs.formidable.converters.ProjectFormToProject;
 import com.hervodalabs.formidable.converters.ProjectToProjectForm;
 import com.hervodalabs.formidable.domain.Project;
-import com.hervodalabs.formidable.domain.ProjectStatus;
+import com.hervodalabs.formidable.enums.ProjectStatus;
 import com.hervodalabs.formidable.services.ClientService;
 import com.hervodalabs.formidable.services.CompanyService;
 import com.hervodalabs.formidable.services.ProjectService;
