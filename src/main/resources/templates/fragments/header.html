@@ -1,41 +1,59 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head lang="en">
-    <link rel="stylesheet" type="text/css" href="../static/css/guru.css" />
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="">
+
 <body>
 
-<div class="container">
-    <div th:fragment="header">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
-                    <ul class="nav navbar-nav">
-                        <li><a href="#" th:href="@{/products}">Products</a></li>
-                        <li><a href="#" th:href="@{/productEntity/new}" sec:authorize="hasAuthority('ADMIN')">Create ProductEntity</a></li>
-                        <li><a href="#" th:href="@{/login}">Sign In</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <div class="welcome">
-            <span sec:authorize="isAuthenticated()">Welcome <span sec:authentication="name"></span></span>
-        </div>
-        <div class="jumbotron">
-            <div class="row text-center">
-                <div class="">
-                    <h2>Spring Framework Guru</h2>
+<div th:fragment="header">
 
-                    <h3>Spring Boot Web App</h3>
+    <nav class="navbar navbar-expand-lg navbar-custom shadow-sm mb-4">
+        <div class="container">
+
+            <!-- LOGO / BRAND -->
+            <a class="navbar-brand fw-bold" th:href="@{/}">HERVODA LABS</a>
+
+            <!-- MOBILE TOGGLER -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- MENU -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <!-- LEFT SIDE -->
+                <ul class="navbar-nav me-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/projects/list}">Projects</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/projects/new}">New Project</a>
+                    </li>
+
+                </ul>
+
+                <!-- RIGHT SIDE (USERNAME) -->
+                <div class="d-flex align-items-center">
+                    <span class="navbar-text text-light me-3"
+                          sec:authorize="isAuthenticated()">
+                        Welcome <strong sec:authentication="name"></strong>
+                    </span>
+
+                    <a class="btn btn-sm btn-primary"
+                       th:href="@{/logout}"
+                       sec:authorize="isAuthenticated()">
+                        Logout
+                    </a>
                 </div>
+
             </div>
-            <div class="row text-center">
-                <img src="../../static/images/NewBannerBOOTS_2.png" width="400"
-                     th:src="@{/images/NewBannerBOOTS_2.png}"/>
-            </div>
+
         </div>
-    </div>
+    </nav>
+
 </div>
 
 </body>

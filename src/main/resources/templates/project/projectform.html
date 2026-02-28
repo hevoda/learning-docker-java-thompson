@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head th:replace="fragments/headerinc :: head">
+    <title th:text="'Project Form - Hervoda Labs'">Project Form</title>
+</head>
+<body>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Project Details</h2>
+
+    <form th:object="${projectForm}" th:action="@{/projects}" method="post">
+
+        <!-- Errori generali -->
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+            <p>There are validation errors</p>
+        </div>
+
+        <!-- ID nascosto -->
+        <input type="hidden" th:field="*{id}"/>
+
+        <!-- NAME -->
+        <div class="mb-3" th:classappend="${#fields.hasErrors('name')} ? 'has-error'">
+            <label class="form-label">Name:</label>
+            <input type="text" class="form-control" th:field="*{name}" required/>
+            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="mb-3" th:classappend="${#fields.hasErrors('description')} ? 'has-error'">
+            <label class="form-label">Description:</label>
+            <textarea class="form-control" th:field="*{description}" rows="3"></textarea>
+            <div class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+        </div>
+
+        <!-- START DATE -->
+        <div class="mb-3" th:classappend="${#fields.hasErrors('startDate')} ? 'has-error'">
+            <label class="form-label">Start Date:</label>
+            <input type="date" class="form-control" th:field="*{startDate}"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
+        </div>
+
+        <!-- END DATE -->
+        <div class="mb-3" th:classappend="${#fields.hasErrors('endDate')} ? 'has-error'">
+            <label class="form-label">End Date:</label>
+            <input type="date" class="form-control" th:field="*{endDate}"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
+        </div>
+
+        <!-- STATUS -->
+        <div class="mb-3" th:classappend="${#fields.hasErrors('status')} ? 'has-error'">
+            <label class="form-label">Status:</label>
+            <select class="form-control" th:field="*{status}">
+                <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}"></option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
+        </div>
+
+        <!-- CONTRACTOR COMPANY -->
+        <div class="mb-3" th:classappend="${#fields.hasErrors('contractorCompanyId')} ? 'has-error'">
+            <label class="form-label">Contractor:</label>
+            <select class="form-control" th:field="*{contractorCompanyId}">
+                <option value="" disabled>Select a contractor</option>
+                <option th:each="company : ${allCompanies}" th:value="${company.id}" th:text="${company.name}"></option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('contractorCompanyId')}" th:errors="*{contractorCompanyId}"></div>
+        </div>
+
+        <!-- CLIENT -->
+        <div class="mb-3" th:classappend="${#fields.hasErrors('clientId')} ? 'has-error'">
+            <label class="form-label">Client:</label>
+            <select class="form-control" th:field="*{clientId}">
+                <option value="" disabled>Select a client</option>
+                <option th:each="client : ${allClients}" th:value="${client.id}" th:text="${client.name}"></option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}"></div>
+        </div>
+
+        <!-- DAILY RATE -->
+        <div class="mb-3" th:classappend="${#fields.hasErrors('dailyRate')} ? 'has-error'">
+            <label class="form-label">Daily Rate (€):</label>
+            <label>
+                <input type="number" min="0.01" step="0.01" class="form-control" th:field="*{dailyRate}" required/>
+            </label>
+            <div class="text-danger" th:if="${#fields.hasErrors('dailyRate')}" th:errors="*{dailyRate}"></div>
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Save Project</button>
+            <a th:href="@{/projects/list}" class="btn btn-secondary">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+<div th:replace="fragments/scripts :: scripts"></div>
+
+</body>
+</html>
