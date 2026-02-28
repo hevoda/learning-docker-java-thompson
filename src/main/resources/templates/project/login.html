@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="">
+<head th:replace="fragments/headerinc :: head">
+    <title th:text="'Login - Hervoda Labs'">Login</title>
+</head>
+<body>
+
+<!-- Navbar tramite fragment (opzionale, puoi anche rimuoverla se vuoi login minimalista) -->
+<div th:replace="fragments/navbar :: header"></div>
+
+<!-- Contenuto principale: form login -->
+<div class="container mt-5" style="max-width: 400px;">
+    <h2 class="text-center mb-4">Login</h2>
+
+    <!-- Messaggio di errore se la login fallisce -->
+    <div th:if="${param.error}" class="alert alert-danger">
+        <strong>Error!</strong> Invalid username and/or password.
+    </div>
+
+    <!-- Messaggio se l'utente è stato disconnesso -->
+    <div th:if="${param.logout}" class="alert alert-info">
+        <strong>Success!</strong> You have been logged out.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <!-- Username -->
+        <div class="form-group mb-3">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" class="form-control" required="true" placeholder="Enter username"/>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group mb-3">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="form-control" required="true" placeholder="Enter password"/>
+        </div>
+
+        <!-- Pulsante di invio -->
+        <button type="submit" class="btn btn-primary w-100">Sign In</button>
+    </form>
+</div>
+
+<!-- Footer opzionale, se vuoi mantenerlo anche sulla login page -->
+<div th:replace="fragments/footer :: footer"></div>
+
+<!-- Script JS -->
+<div th:replace="fragments/scripts :: scripts"></div>
+
+</body>
+</html>

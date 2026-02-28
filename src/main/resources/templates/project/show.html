@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head th:replace="fragments/headerinc :: head">
+    <title th:text="'Project Details - Hervoda Labs'">Project Details</title>
+</head>
+<body>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Project Details</h2>
+
+    <div class="card p-3">
+        <!-- Project ID -->
+        <div class="mb-2">
+            <strong>ID:</strong> <span th:text="${project.id}"></span>
+        </div>
+
+        <!-- Project Name -->
+        <div class="mb-2">
+            <strong>Name:</strong> <span th:text="${project.name}"></span>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-2">
+            <strong>Description:</strong> <span th:text="${project.description}"></span>
+        </div>
+
+        <!-- Start Date -->
+        <div class="mb-2">
+            <strong>Start Date:</strong> <span th:text="${project.startDate}"></span>
+        </div>
+
+        <!-- End Date -->
+        <div class="mb-2">
+            <strong>End Date:</strong> <span th:text="${project.endDate}"></span>
+        </div>
+
+        <!-- Status -->
+        <div class="mb-2">
+            <strong>Status:</strong> <span th:text="${project.status}"></span>
+        </div>
+
+        <!-- Contractor Company -->
+        <div class="mb-2">
+            <strong>Contractor:</strong> <span th:text="${project.contractorCompany.name}"></span>
+        </div>
+
+        <!-- Client -->
+        <div class="mb-2">
+            <strong>Client:</strong> <span th:text="${project.client.name}"></span>
+        </div>
+
+        <!-- Daily Rate -->
+        <div class="mb-2">
+            <strong>Daily Rate (€):</strong> <span th:text="${project.dailyRate}"></span>
+        </div>
+
+        <!-- Technologies -->
+        <div class="mb-2" th:if="${project.technologies}">
+            <strong>Technologies:</strong>
+            <ul>
+                <li th:each="tech : ${project.technologies}" th:text="${tech.technology.name}"></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-3">
+        <a th:href="@{/projects/list}" class="btn btn-primary">Back to Project List</a>
+    </div>
+</div>
+
+<div th:replace="fragments/scripts :: scripts"></div>
+</body>
+</html>

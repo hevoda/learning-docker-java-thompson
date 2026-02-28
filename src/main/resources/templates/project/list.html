@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head th:replace="fragments/headerinc :: head">
+    <title th:text="'Project List - Hervoda Labs'">Project List</title>
+</head>
+<body>
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Project List</h2>
+        <a class="btn btn-success" th:href="@{/project/new}">Add New Project</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3" th:each="project : ${projects}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${project.name}">Project Name</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" th:text="${project.status}">Status</h6>
+                    <p class="card-text">
+                        <strong>Start:</strong> <span th:text="${project.startDate}">Start Date</span><br/>
+                        <strong>End:</strong> <span th:text="${project.endDate}">End Date</span><br/>
+                        <strong>Contractor:</strong> <span th:text="${project.contractorCompany != null ? project.contractorCompany.name : '—'}"></span><br/>
+                        <strong>Client:</strong> <span th:text="${project.client != null ? project.client.name : '—'}"></span><br/>
+                        <strong>Daily Rate:</strong> €<span th:text="${project.dailyRate}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Technologies:</strong>
+                    <ul>
+                        <li th:each="pt : ${project.technologies}">
+                            <span th:text="${pt.technology.name}">Tech</span>
+                            (<span th:text="${pt.technology.version}">vX.X</span>)
+                            - <span th:text="${pt.usage}">Usage</span>
+                        </li>
+                    </ul>
+                    </p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a class="btn btn-info btn-sm" th:href="@{'/project/show/' + ${project.id}}">View</a>
+                    <div>
+                        <a class="btn btn-warning btn-sm" th:href="@{'/project/edit/' + ${project.id}}">Edit</a>
+                        <a class="btn btn-danger btn-sm" th:href="@{'/project/delete/' + ${project.id}}"
+                           onclick="return confirm('Are you sure you want to delete this project?');">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="fragments/scripts :: scripts"></div>
+</body>
+</html>

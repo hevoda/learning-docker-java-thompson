@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head th:replace="fragments/headerinc :: head">
+    <title th:text="'Welcome - Hervoda Labs'">Hervoda Labs</title>
+</head>
+<body>
+
+<!-- Navbar tramite fragment -->
+<div th:replace="fragments/navbar :: header"></div>
+
+<!-- Contenuto principale -->
+<div class="container mt-5 text-center">
+    <!-- Nome Azienda -->
+    <div class="company-name">HERVODA LABS</div>
+
+    <!-- Slogan -->
+    <div class="slogan">Soluzioni intelligenti, codice su misura</div>
+
+    <!-- Titolo -->
+    <h2>Welcome to Our Projects Application</h2>
+    <p>Please log in to access the projects we've worked on.</p>
+
+    <!-- Pulsante per login -->
+    <a th:href="@{/login}" class="btn btn-primary mt-3">Go to Login</a>
+</div>
+
+<!-- Footer tramite fragment -->
+<div th:replace="fragments/footer :: footer"></div>
+
+<!-- Script JS -->
+<div th:replace="fragments/scripts :: scripts"></div>
+
+</body>
+</html>
