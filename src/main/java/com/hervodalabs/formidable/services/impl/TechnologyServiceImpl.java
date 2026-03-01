@@ -1,7 +1,8 @@
-package com.hervodalabs.formidable.services;
+package com.hervodalabs.formidable.services.impl;
 
 import com.hervodalabs.formidable.domain.Technology;
 import com.hervodalabs.formidable.repositories.TechnologyRepository;
+import com.hervodalabs.formidable.services.TechnologyService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

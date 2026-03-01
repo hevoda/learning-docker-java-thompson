@@ -1,12 +1,18 @@
 package com.hervodalabs.formidable.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 import java.util.Set;
+import java.util.HashSet;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString(exclude = "projects")
+@EqualsAndHashCode(exclude = "projects")
 public class Technology {
 
     @Id
@@ -14,11 +20,8 @@ public class Technology {
     private Long id;
 
     private String name;
-
     private String version;
 
     @OneToMany(mappedBy = "technology")
-    private Set<ProjectTechnology> projects = new java.util.HashSet<>();
-
-
+    private Set<ProjectTechnology> projects = new HashSet<>();
 }

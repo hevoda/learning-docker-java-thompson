@@ -1,43 +1,33 @@
-# Compiled source #
-###################
-*.com
+# Compiled source
 *.class
-*.dll
 *.exe
-*.o
-*.so
 
-# Packages #
-############
-# it's better to unpack these files and commit the raw source
-# git has its own built in compression methods
+# Packages
 *.7z
-*.dmg
-*.gz
-*.iso
-*.rar
-*.tar
 *.zip
+*.tar
+*.gz
 
-# Logs and databases #
-######################
+# Logs and databases
 *.log
 *.sqlite
+*.h2.db
 
-# OS generated files #
-######################
+# OS generated files
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
+# IDE - IntelliJ / Eclipse
+.idea/
+*.iml
 .project
 .classpath
-.idea
-.mvn
-*.iml
-atlassian-ide-plugin.xml
-target
+.settings/
+.factorypath
+
+# Build Output
+/target/
+
+# Maven Wrapper - IMPORTANTE: Rimuovi .mvn dalle esclusioni
+# Permettiamo esplicitamente il wrapper per la CI/CD
+!/.mvn/wrapper/maven-wrapper.jar

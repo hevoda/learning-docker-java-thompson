@@ -1,10 +1,16 @@
 package com.hervodalabs.formidable.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString(exclude = {"project", "technology"})
+@EqualsAndHashCode(exclude = {"project", "technology"})
 public class ProjectTechnology {
 
     @Id
@@ -17,5 +23,5 @@ public class ProjectTechnology {
     @ManyToOne
     private Technology technology;
 
-    private String usage; // <-- Qui metti "versionamento", "frontend", "CI/CD", ecc.
+    private String usage;
 }
