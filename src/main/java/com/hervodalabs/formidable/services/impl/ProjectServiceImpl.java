@@ -1,17 +1,17 @@
-package com.hervodalabs.formidable.services;
+package com.hervodalabs.formidable.services.impl;
 
 
 import com.hervodalabs.formidable.domain.Client;
 import com.hervodalabs.formidable.domain.Company;
 import com.hervodalabs.formidable.domain.Project;
 import com.hervodalabs.formidable.repositories.ProjectRepository;
+import com.hervodalabs.formidable.services.ProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
