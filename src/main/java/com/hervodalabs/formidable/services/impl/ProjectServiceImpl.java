@@ -5,6 +5,8 @@ import com.hervodalabs.formidable.domain.Client;
 import com.hervodalabs.formidable.domain.Company;
 import com.hervodalabs.formidable.domain.Project;
 import com.hervodalabs.formidable.repositories.ProjectRepository;
+import com.hervodalabs.formidable.services.ClientService;
+import com.hervodalabs.formidable.services.CompanyService;
 import com.hervodalabs.formidable.services.ProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +21,12 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final ClientServiceImpl clientService;  // Iniezione del servizio ClientService
-    private final CompanyServiceImpl companyService;
+    private final ClientService clientService;  // Iniezione del servizio ClientService
+    private final CompanyService companyService;
 
 
     @Autowired
-    public ProjectServiceImpl(ProjectRepository projectRepository, ClientServiceImpl clientService, CompanyServiceImpl companyService) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, ClientService clientService, CompanyService companyService) {
         this.projectRepository = projectRepository;
         this.clientService = clientService;
         this.companyService = companyService;

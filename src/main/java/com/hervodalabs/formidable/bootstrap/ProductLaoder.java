@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -29,7 +30,15 @@ public class ProductLaoder implements ApplicationListener<ContextRefreshedEvent>
 
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        // 1. Controllo di sicurezza: carica i dati solo se il DB è vuoto
+        if (productRepository.count() > 0) {
+            log.info("Dati già presenti nel database. Salto il caricamento.");
+            return;
+        }
+
+        log.info("Database vuoto. Inizio caricamento dati di test...");
 
         ProductEntity shirt = new ProductEntity();
         shirt.setDescription("Spring Framework Guru Shirt");

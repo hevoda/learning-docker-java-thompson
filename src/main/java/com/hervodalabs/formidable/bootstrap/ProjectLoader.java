@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -35,7 +36,16 @@ public class ProjectLoader implements ApplicationListener<ContextRefreshedEvent>
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
+
+        // 1. Controllo di sicurezza: carica i dati solo se il DB è vuoto
+        if (projectRepository.count() > 0) {
+            log.info("Dati già presenti nel database. Salto il caricamento.");
+            return;
+        }
+
+        log.info("Database vuoto. Inizio caricamento dati di test...");
         // Creazione di una compagnia di esempio (contractor)
         Company contractorCompany = new Company();
         contractorCompany.setName("Tech Solutions Inc.");
