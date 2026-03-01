@@ -1,9 +1,10 @@
-package com.hervodalabs.formidable.services;
+package com.hervodalabs.formidable.services.impl;
 
 import com.hervodalabs.formidable.commands.ProductForm;
 import com.hervodalabs.formidable.converters.ProductFormToProduct;
 import com.hervodalabs.formidable.domain.ProductEntity;
 import com.hervodalabs.formidable.repositories.ProductRepository;
+import com.hervodalabs.formidable.services.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

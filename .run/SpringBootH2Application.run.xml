@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SpringBootH2Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="h2" />
+    <option name="DEBUG_MODE" value="true" />
+    <module name="spring-boot-docker" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.hervodalabs.formidable.SpringBootH2Application" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

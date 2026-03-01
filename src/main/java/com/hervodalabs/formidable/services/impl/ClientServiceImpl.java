@@ -1,7 +1,8 @@
-package com.hervodalabs.formidable.services;
+package com.hervodalabs.formidable.services.impl;
 
 import com.hervodalabs.formidable.domain.Client;
 import com.hervodalabs.formidable.repositories.ClientRepository;
+import com.hervodalabs.formidable.services.ClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
