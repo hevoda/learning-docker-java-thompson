@@ -4,12 +4,13 @@
 #-------------------------------------------------------------------------------#
 
 name: Qodana
+
 on:
   workflow_dispatch:
   pull_request:
     branches: [ "main", "develop" ]
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "feature/**" ]
 
 jobs:
   qodana:
@@ -19,21 +20,27 @@ jobs:
       pull-requests: write
       checks: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          #ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
+          fetch-depth: 0 # Fondamentale per Qodana per calcolare la cronologia dei passati commit
+
+      - name: Set up JDK 21 (For Maven dependencies caching)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven # Riduce drasticamente il tempo di esecuzione di Qodana scaricando le dipendenze dalla cache
+
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2025.3
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
         with:
-          # When pr-mode is set to true, Qodana analyzes only the files that have been changed
-          pr-mode: true
+          # Attiva il pr-mode (analisi parziale) se è una PR OPPURE se stai pushando su un branch di feature
+          pr-mode: ${{ github.event_name == 'pull_request' || contains(github.ref, 'refs/heads/feature/') }}
           use-caches: true
           post-pr-comment: true
           use-annotations: true
-          # Upload Qodana results (SARIF, other artifacts, logs) as an artifact to the job
           upload-result: true
-          # quick-fixes available in Ultimate and Ultimate Plus plans
           push-fixes: 'none'
