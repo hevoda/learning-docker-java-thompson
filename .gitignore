@@ -24,6 +24,7 @@ Thumbs.db
 .classpath
 .settings/
 .factorypath
+.run
 
 # Build Output
 /target/
