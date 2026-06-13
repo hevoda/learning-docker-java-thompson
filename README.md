@@ -1,17 +1,23 @@
+
 # learning-docker-java-thompson
 
-This repository contains a Spring Boot example project.
+Questo repository contiene un progetto esempio Spring Boot.
 
-Continuous dependency maintenance and security scanning added:
+Continuous integration, quality scans e manutenzione delle dipendenze:
 
-- Dependabot configured to check Maven dependencies weekly (.github/dependabot.yml)
-- CI: OWASP Dependency-Check added to the Maven CI workflow (.github/workflows/maven-ci.yml)
-- Automated dependency updates workflow (.github/workflows/ci-dependency-updates.yml)
+- `Dependabot` configurato per controllare le dipendenze Maven settimanalmente (`.github/dependabot.yml`).
+- CI: GitHub Actions esegue la build Maven con il workflow `./github/workflows/maven-ci.yml` (usa `./mvnw clean package`).
+- Analisi della qualità del codice con Qodana tramite il workflow ` .github/workflows/qodana-code-quality.yml`.
 
-Workflows summary:
+Riepilogo dei workflow attivi:
 
-- On push / PR: run Maven build and OWASP Dependency-Check (maven-ci.yml)
-- Weekly: Dependabot opens direct dependency updates PRs
-- Weekly schedule: ci-dependency-updates.yml runs the Maven Versions Plugin and opens a PR with updated direct dependency versions
+- On push / PR: esegue la build Maven (vedi ` .github/workflows/maven-ci.yml`).
+- Qodana: esegue scansioni di code quality su PR e su push verso branch di feature (vedi ` .github/workflows/qodana-code-quality.yml`).
+- Weekly: `Dependabot` apre PR per aggiornamenti delle dipendenze dirette (configurato in ` .github/dependabot.yml`).
 
-Review CI results and dependency-update PRs before merging.
+Note importanti:
+
+- Il workflow `ci-dependency-updates.yml` per aggiornamenti automatici delle dipendenze non è più presente in questo repository; gli aggiornamenti sono gestiti da `Dependabot`.
+- Il `pom.xml` include il plugin OWASP Dependency-Check per scansioni locali, ma al momento non viene eseguito come step nel workflow CI principale.
+
+Revisiona i risultati del CI e le PR di aggiornamento delle dipendenze prima di effettuare il merge.
