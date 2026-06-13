@@ -29,14 +29,8 @@ jobs:
       - name: Make mvnw executable
         run: chmod +x mvnw
 
-      - name: OWASP Dependency-Check
-        uses: dependency-check/dependency-check-action@v10.0.2
-        with:
-          project: 'learning-docker-java-thompson'
-          scan: './'
-          format: 'HTML'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: OWASP Dependency-Check (via Maven)
+        run: ./mvnw org.owasp:dependency-check-maven:check
 
       - name: Build with Maven Wrapper
         run: ./mvnw clean package
