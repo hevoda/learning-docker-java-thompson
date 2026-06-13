@@ -2,7 +2,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main", "develop", "feature/*" ]
+    branches: [ "main", "develop", "feature/**" ]
     paths-ignore:
     - '.github/workflows/*'
   workflow_dispatch:
@@ -28,6 +28,15 @@ jobs:
 
       - name: Make mvnw executable
         run: chmod +x mvnw
+
+      - name: OWASP Dependency-Check
+        uses: owasp/dependency-check-action@v6
+        with:
+          project: 'learning-docker-java-thompson'
+          scan: './'
+          format: 'HTML'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build with Maven Wrapper
         run: ./mvnw clean package

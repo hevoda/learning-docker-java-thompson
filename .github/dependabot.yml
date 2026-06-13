@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-type: "direct"
+    # Ignore major updates to avoid breaking changes being opened automatically
+    # Maintainers can relax this as desired
+    ignore:
+      - update-types: ["version-update:semver-major"]
+
